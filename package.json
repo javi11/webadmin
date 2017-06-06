@@ -1,0 +1,40 @@
+{
+  "name": "webadmin-middleware",
+  "version": "1.0.0",
+  "description": "webadmin middleware for axa webadmin",
+  "private": true,
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "local": "npm run build && npm run start",
+    "build": "node node_modules/webpack/bin/webpack.js --config config/webpack.config.js",
+    "postinstall": "node node_modules/typings/dist/bin.js install --overwrite",
+    "start": "node build/compiled"
+  },
+  "main": "build/compiled",
+  "keywords": [
+    "webadmin"
+  ],
+  "author": "Axa",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-loader": "^2.0.2",
+    "typescript": "^2.2.1",
+    "typings": "^1.3.3",
+    "webpack": "^2.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "app-root-path": "^2.0.1",
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.1",
+    "express": "^4.15.2",
+    "express-http-proxy": "^1.0.3",
+    "morgan": "^1.7.0"
+  }
+}
