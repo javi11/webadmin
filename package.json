@@ -10,9 +10,9 @@
     "local": "npm run build && npm run start",
     "build": "node node_modules/webpack/bin/webpack.js --config config/webpack.config.js",
     "postinstall": "node node_modules/typings/dist/bin.js install --overwrite",
-    "start": "node build/compiled"
+    "start": "node lib/build.js"
   },
-  "main": "build/compiled",
+  "main": "lib/build.js",
   "keywords": [
     "webadmin"
   ],

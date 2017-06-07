@@ -4,11 +4,12 @@ import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 import * as root from 'app-root-path';
 import * as cookieParser from 'cookie-parser';
-import * as routes from './server/routes';
+import * as routes from './routes';
 import * as proxy from 'express-http-proxy';
+import * as config from './config.json';
 
 const app = express();
-const models = ['amfusers', 'solution'];
+const allowedPath = (<any>config).models.map(model => `^/${model}`);
 
 // view engine setup
 app.set('views', `${root}/server/views/`);
@@ -19,14 +20,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-
 app.use(cookieParser());
-
 app.use('/', routes);
-
-app.use('/v1/api', proxy('https://amf-backend-core-node-uat.axaxx.nu/v1/api/', {
-    filter: function (req, res) {
-        const regexModels = new RegExp(models.join("|"), 'gi');
+app.use('/v1/api', proxy((<any>config).target, {
+    filter: (req, res) => {
+        const regexModels = new RegExp(allowedPath.join("|"), 'gi');
         return regexModels.test(req.path);
     }
 }));

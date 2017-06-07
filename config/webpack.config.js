@@ -1,13 +1,13 @@
 const root = require('app-root-path').path;
 module.exports = {
-  entry: `${root}/bin/www.ts`,
+  entry: `${root}/src/server.ts`,
   target: 'node',
   externals: [
     /^[a-z\-0-9]+$/ // Ignore node_modules folder
   ],
   output: {
-    filename: 'compiled', // output file
-    path: `${root}/build`,
+    filename: 'build.js', // output file
+    path: `${root}/lib`,
     libraryTarget: "commonjs"
   },
   resolve: {
