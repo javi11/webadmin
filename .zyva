@@ -1,0 +1,7 @@
+[mocha]
+    esnext = true
+    timeout = 30000
+
+[coverage]
+    statements = 0.80
+    branches = 0.80

@@ -1,0 +1,13 @@
+{
+    "HELLO": {
+        "HELLO": "Hola {{value}}",
+        "NAVIGATE": "Navegar",
+        "SPANISH": "Español",
+        "ENGLISH": "Inglés"
+    },
+    "GOODBYE": {
+        "GOODBYE": "Adiós Angular",
+        "HOME_LINK": "Esto es un link al home",
+        "LOAD_GNOMES": "Cargar algunos gnomos"
+    }
+}

@@ -1,13 +1,13 @@
 /**
  * Module dependencies.
  */
-import * as app from './app';
-import * as http from 'http';
+const app = require('../app');
+const http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
-let PORT = process.env.PORT || '3000';
+const PORT = process.env.PORT || '3000';
 
 function getPort(val) {
   /**
@@ -37,7 +37,7 @@ const server = http.createServer(app);
  */
 server.listen(PORT);
 
-server.on('error', (error) => {
+server.on('error', error => {
   /**
    * Event listener for HTTP server "error" event.
    */
@@ -48,13 +48,15 @@ server.on('error', (error) => {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+      console.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
+
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      console.error(`${bind} is already in use`);
       process.exit(1);
       break;
+
     default:
       throw error;
   }
@@ -65,6 +67,6 @@ server.on('listening', () => {
    * Event listener for HTTP server "listening" event.
    */
   const addr = server.address();
-  const bind = (typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`);
+  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
   console.log(`Listening on ${bind}`);
 });
