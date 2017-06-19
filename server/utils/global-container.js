@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2017 AXA Group Solutions.
  *
- * Licensed under the AXA Group Solutions License (the "License"); you
- * may not use this file except in compliance with the License.
+ * Licensed under the AXA Group Solutions License (the "License")
+ * you may not use this file except in compliance with the License.
  * A copy of the License can be found in the LICENSE.TXT file distributed
  * together with this file.
  *
@@ -13,11 +13,13 @@
  * limitations under the License.
  */
 
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { enableProdMode } from '@angular/core';
-import { AppModule } from './app/app.module';
+const instance = {};
 
-if (process.env.ENV === 'production') {
-  enableProdMode();
-}
-platformBrowserDynamic().bootstrapModule(AppModule);
+module.exports = {
+  get: function get(key) {
+    return instance[key];
+  },
+  set: function set(key, value) {
+    instance[key] = value;
+  }
+};

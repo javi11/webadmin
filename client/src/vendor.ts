@@ -12,3 +12,5 @@ import '@angular/router';
 import 'rxjs';
 
 // Other vendors
+
+import '@axa/web-toolkit/dist/js/index';

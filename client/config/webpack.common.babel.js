@@ -6,9 +6,9 @@ import helpers from './helpers';
 
 export default {
   entry: {
-    polyfills: './src/polyfills.ts',
-    vendor: './src/vendor.ts',
-    app: './src/main.ts'
+    polyfills: './client/src/polyfills.ts',
+    vendor: './client/src/vendor.ts',
+    app: './client/src/main.ts'
   },
 
   resolve: {
@@ -95,7 +95,7 @@ export default {
     }),
 
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
+      template: 'client/src/index.html'
     }),
 
     new webpack.ContextReplacementPlugin(

@@ -15,6 +15,7 @@
 
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import '../../../node_modules/@axa/web-toolkit/scss/style.scss';
 import './app.scss';
 
 @Component({

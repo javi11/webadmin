@@ -1,13 +1,21 @@
-/**
- * Module dependencies.
+/*
+ * Copyright (c) 2017 AXA Group Solutions.
+ *
+ * Licensed under the AXA Group Solutions License (the "License")
+ * you may not use this file except in compliance with the License.
+ * A copy of the License can be found in the LICENSE.TXT file distributed
+ * together with this file.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-const app = require('../app');
-const http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
-const PORT = process.env.PORT || '3000';
+const app = require('../app');
+const logger = require('../utils/global-container.js').get('logger');
+const http = require('http');
 
 function getPort(val) {
   /**
@@ -25,6 +33,10 @@ function getPort(val) {
   return false;
 }
 
+/**
+ * Get port from environment and store in Express.
+ */
+const PORT = getPort(process.env.PORT) || '3020';
 app.set('port', PORT);
 
 /**
@@ -37,7 +49,7 @@ const server = http.createServer(app);
  */
 server.listen(PORT);
 
-server.on('error', error => {
+server.on('error', (error) => {
   /**
    * Event listener for HTTP server "error" event.
    */
@@ -48,12 +60,12 @@ server.on('error', error => {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(`${bind} requires elevated privileges`);
+      logger.error(`${bind} requires elevated privileges`);
       process.exit(1);
       break;
 
     case 'EADDRINUSE':
-      console.error(`${bind} is already in use`);
+      logger.error(`${bind} is already in use`);
       process.exit(1);
       break;
 
@@ -68,5 +80,5 @@ server.on('listening', () => {
    */
   const addr = server.address();
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-  console.log(`Listening on ${bind}`);
+  logger.info(`Listening on ${bind}`);
 });
