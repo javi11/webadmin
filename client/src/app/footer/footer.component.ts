@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -22,6 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./footer.scss'],
 })
 export class FooterComponent {
+  @Input() showPrivacy: boolean = false;
   private language: string;
   private selectedOption: number;
 

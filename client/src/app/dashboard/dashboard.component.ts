@@ -16,6 +16,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthHttp } from 'angular2-jwt';
 
 @Component({
   selector: 'dashboard',
@@ -29,6 +30,7 @@ export class DashboardComponent {
   constructor(
     private router: Router,
     private translate: TranslateService,
+    public authHttp: AuthHttp,
   ) {
     // init the value
     this.language = translate.currentLang;
