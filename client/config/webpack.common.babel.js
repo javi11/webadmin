@@ -32,8 +32,12 @@ export default {
         use: 'html-loader'
       },
       {
-        test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-        use: 'file-loader?name=assets/[name].[hash].[ext]'
+        test: /\.(ttf|eot|svg|woff(2)?)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader?limit=1024&name=./assets/fonts/[name].[ext]'
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/,
+        use: 'file-loader?name=assets/img/[name].[hash].[ext]'
       },
       {
         test: /\app.scss$/,
@@ -63,6 +67,14 @@ export default {
         ]
       },
       {
+        test: /\.css$/,
+        exclude: helpers.root('src', 'app'),
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          loader: 'css-loader?sourceMap&minimize'
+        })
+      },
+      {
         test: /\.ts$/,
         enforce: 'pre',
         loader: 'tslint-loader',
@@ -78,7 +90,7 @@ export default {
     // Workaround for angular/angular#11580
     new webpack.ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
-      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      /angular(\\|\/)core(\\|\/)@angular/,
       helpers.root('./src'), // location of your src
       {} // a map of your routes
     ),
@@ -87,6 +99,10 @@ export default {
       {
         from: helpers.root('src', 'assets', 'i18n'),
         to: 'assets/i18n'
+      },
+      {
+        from: helpers.root('src', 'assets', 'img'),
+        to: 'assets/img'
       }
     ]),
 
@@ -95,14 +111,8 @@ export default {
     }),
 
     new HtmlWebpackPlugin({
-      template: 'client/src/index.html'
-    }),
-
-    new webpack.ContextReplacementPlugin(
-      /angular(\\|\/)core(\\|\/)@angular/,
-      helpers.root('./src'),
-      {}
-    )
+      template: './client/src/index.html'
+    })
   ],
 
   performance: {

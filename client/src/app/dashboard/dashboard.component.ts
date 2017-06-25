@@ -17,19 +17,13 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
-const logo = require('../../assets/img/images/angular.svg');
-const icon = require('../../assets/img/icons/exclamation.svg');
-
 @Component({
-  selector: 'hello',
-  templateUrl: './hello.html',
-  styleUrls: ['./hello.scss'],
+  selector: 'dashboard',
+  templateUrl: './dashboard.html',
+  styleUrls: ['./dashboard.scss'],
 })
-export class HelloComponent {
+export class DashboardComponent {
   private name: string = 'Angular';
-  // Layer id is needed to use as <svg> but not for <img>. See difference in html
-  private logo: SVGAElement = logo;
-  private icon: string = `${icon}#Layer_1`;
   private language: string;
 
   constructor(

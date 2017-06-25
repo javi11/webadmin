@@ -25,5 +25,10 @@ export default webpackMerge(commonConfig, {
 
   performance: {
     hints: false
-  }
+  },
+
+  plugins: [
+    // Workaround for make the bootstrap fonts working on live reload
+    new ExtractTextPlugin('vendor.css')
+  ]
 });

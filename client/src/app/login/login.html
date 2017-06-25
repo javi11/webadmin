@@ -1,0 +1,24 @@
+<div class="login-bg">
+  <div class="container">
+    <div class="row justify-content-sm-center align-items-center">
+      <div class="card col-sm-4">
+        <img id="profile-img" class="profile-img-card" src="../../assets/img/images/avatar-empty.png" />
+        <p id="profile-name" class="profile-name-card"></p>
+        <form class="form">
+          <span id="reauth-email" class="reauth-email"></span>
+          <div class="form-group">
+            <label for="email">{{'LOGIN.EMAIL' | translate}}</label>
+            <input type="email" id="email" placeholder="e.g. Jane" class="form-control" placeholder="Email address" required autofocus
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">{{'LOGIN.PASSWORD' | translate}}</label>
+            <input type="password" id="password" placeholder="e.g. such secret" class="form-control" />
+          </div>
+          <button class="btn btn-lg btn-block btn-axa" type="submit">{{'LOGIN.SIGN_IN' | translate}}</button>
+        </form>
+        <a href="https://passaxa.axa.com/pass/password_management.jsp" target="_blank" class="forgot-password pass-axa">{{'LOGIN.ACTIVATE_PASSAXA' | translate}}</a>
+      </div>
+    </div>
+  </div>
+</div>

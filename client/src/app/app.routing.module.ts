@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import helloRoute from './hello/hello.route';
-import goodbyeRoute from './goodbye/goodbye.route';
+import dashboardRoute from './dashboard/dashboard.route';
+import loginRoute from './login/login.route';
 
 const appRoutes: Routes = [
-  helloRoute,
-  goodbyeRoute,
+  loginRoute,
+  dashboardRoute,
   {
     path: '',
-    redirectTo: '/hello',
+    redirectTo: '/dashboard',
     pathMatch: 'full',
   },
 ];

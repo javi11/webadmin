@@ -1,0 +1,13 @@
+:host {
+  .header-meta-menu-link {
+    border: 0px !important;
+    background: inherit !important;
+  }
+  .header-meta-menu-link:hover {
+    color: #0e13e3;
+  }
+  .dropdown-menu {
+    left:inherit;
+    right: 0;
+  }
+}

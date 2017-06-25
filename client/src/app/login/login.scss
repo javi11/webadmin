@@ -1,0 +1,44 @@
+:host {
+  .login-bg {
+    background: url(../../assets/img/images/login-bg.jpg) no-repeat bottom center;
+    min-height: 540px;
+  }
+  .form-title {
+    font-size: 25px;
+  }
+  .pass-axa {
+    background: url(../../assets/img/images/pass-axa.png) no-repeat 0 0;
+    padding: 5px 0 5px 35px;
+  }
+  .card {
+    padding: 40px 40px;
+    height: 510px;
+  }
+  .form {
+    padding: 0;
+  }
+  .profile-img-card {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+  }
+  .profile-name-card {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0 0;
+    min-height: 1em;
+  }
+  .forgot-password {
+    color: rgb(104, 145, 162);
+  }
+  .forgot-password:hover,
+  .forgot-password:active,
+  .forgot-password:focus {
+    color: rgb(12, 97, 33);
+  }
+}

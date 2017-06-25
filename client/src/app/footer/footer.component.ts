@@ -14,26 +14,36 @@
  */
 
 import { Component } from '@angular/core';
-import { GnomeService } from '../common/services';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'goodbye',
-  templateUrl: './goodbye.html',
-  providers: [GnomeService],
-  styleUrls: ['./goodbye.scss'],
+  selector: 'axa-footer',
+  templateUrl: './footer.html',
+  styleUrls: ['./footer.scss'],
 })
-
-export class GoodbyeComponent {
-  private gnomes: {}[] = [];
+export class FooterComponent {
+  private language: string;
+  private selectedOption: number;
 
   constructor(
-    private gnomeService: GnomeService,
-  ) { }
+    private translate: TranslateService,
+  ) {
+    // init the value
+    this.language = translate.currentLang;
+  }
 
-  loadGnomes(): void {
-    if (!this.gnomes.length) {
-      this.gnomeService.loadAllGnomes()
-        .subscribe(gnomes => this.gnomes = gnomes);
+  public toggleShow(option: number) {
+    if (this.selectedOption === option) {
+      this.selectedOption = 0;
+    } else {
+      this.selectedOption = option;
     }
   }
+
+  public changueLanguague(language: string): void {
+    this.language = language;
+    this.translate.use(this.language);
+  }
+
+
 }

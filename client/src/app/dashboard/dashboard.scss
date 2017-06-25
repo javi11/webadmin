@@ -12,14 +12,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@import './common/styles/variables.scss';
-
-.loading {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.with_icon_right {
-  margin-right: 5px;
-}
+@import '../common/styles/variables.scss';

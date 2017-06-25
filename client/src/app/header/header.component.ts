@@ -13,13 +13,22 @@
  * limitations under the License.
  */
 
-@import './common/styles/variables.scss';
+import { Component } from '@angular/core';
 
-.loading {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.with_icon_right {
-  margin-right: 5px;
+const logo = require('../../../../node_modules/@axa/web-toolkit/images/axa.svg');
+
+@Component({
+  selector: 'axa-header',
+  templateUrl: './header.html',
+  styleUrls: ['./header.scss'],
+})
+export class HeaderComponent {
+  private logo: SVGAElement = logo;
+  private openMenu: boolean;
+
+  constructor() { }
+
+  toggleOpenMenu() {
+    this.openMenu = !this.openMenu;
+  }
 }

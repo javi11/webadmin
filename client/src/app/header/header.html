@@ -1,0 +1,80 @@
+<header class="header">
+  <div class="header-meta hidden-sm-down">
+    <div class="container">
+      <nav class="header-meta-menu float-xs-right">
+        <ul class="header-meta-menu-list">
+          <li class="header-meta-menu-item">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             <span class="with_icon_right"> User</span> <i class="fa fa-user fa-lg"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="#">logout</a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="header-main" data-make="drawer" id="site">
+    <div class="container">
+      <a href="#" class="header-brand">
+        <img class="header-brand-image"  [src]="logo" />
+      </a>
+
+      <a href="#" class="header-burger float-xs-right hidden-md-up" data-fade="drawer" data-target="#site" data-in="is-open">
+        <span class="header-burger-line"></span>
+      </a>
+
+      <form id="overviewSearch" class="header-search float-xs-right" data-search="header">
+        <div class="header-search-dunno">
+          <input type="text" class="header-search-input" name="q" placeholder="Search the entire axa.com" />
+          <button type="submit" class="header-search-button">
+            <span class="sr-only">Search</span>
+            <span class="fa fa-search" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+      <div class="drawer togglable-xs-top" data-fade="drawer" data-target="#site" data-in="in">
+        <ul>
+          <li>
+            <a href="#" class="nav-link">Solutions</a>
+          </li>
+          <li>
+            <a href="#" class="nav-link">Components</a>
+          </li>
+          <li>
+            <a href="#" class="nav-link">Users</a>
+          </li>
+          <li>
+            <a href="#" class="nav-link">Installations</a>
+          </li>
+          <li>
+            <a href="#" class="nav-link">Notifications</a>
+          </li>
+        </ul>
+      </div>
+      <nav id="overviewNav" class="nav float-xs-right hidden-sm-down" data-fade="search" data-target="#overviewSearch" data-in="fade-in-delayed-xs-up"
+        data-out="fade-out-xs-up">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="#" class="nav-link">Solutions</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Components</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Users</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Installations</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Notifications</a>
+          </li>
+        </ul>
+        <div class="nav-stroke" data-spy="stroke" data-target="#overviewNav"></div>
+      </nav>
+    </div>
+  </div>
+</header>

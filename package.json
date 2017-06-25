@@ -4,7 +4,7 @@
   "description": "webadmin middleware for axa webadmin",
   "scripts": {
     "start": "node server/bin/www.js",
-    "dev": "npm start & npm run start-client",
+    "dev": "npm-run-all --parallel start start-client",
     "zyva": "zyva",
     "lint": "eslint src",
     "build": "npm run build-client",
@@ -21,7 +21,7 @@
     "test-client": "karma start",
     "build-client": "rimraf ./client/dist && webpack --config ./client/config/webpack.prod.babel.js --profile --bail",
     "lint-client": "tslint -e ./client/**/*.ts",
-    "start-client": "webpack-dev-server --config ./client/config/webpack.dev.babel.js --inline"
+    "start-client": "rimraf ./client/dist && webpack-dev-server --config ./client/config/webpack.dev.babel.js --inline"
   },
   "main": "server/bin/www.js",
   "keywords": [
@@ -60,6 +60,7 @@
     "eslint-plugin-import": "2.2.0",
     "extract-text-webpack-plugin": "2.1.0",
     "file-loader": "^0.9.0",
+    "font-awesome": "^4.7.0",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.16.1",
     "jasmine-core": "^2.4.1",
@@ -70,6 +71,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^2.0.1",
     "node-sass": "^4.5.2",
+    "npm-run-all": "^4.0.2",
     "null-loader": "^0.1.1",
     "pre-commit": "1.2.2",
     "rimraf": "^2.5.2",
@@ -87,8 +89,7 @@
     "webpack": "2.6.1",
     "webpack-dev-server": "2.4.1",
     "webpack-merge": "^3.0.0",
-    "zone.js": "^0.8.10",
-    "zyva": "8.3.0"
+    "zone.js": "^0.8.10"
   },
   "dependencies": {
     "app-root-path": "^2.0.1",

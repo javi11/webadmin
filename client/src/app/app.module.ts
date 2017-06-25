@@ -22,8 +22,10 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app.routing.module';
 import { AppComponent } from './app.component';
-import { HelloComponent } from './hello/hello.component';
-import { GoodbyeComponent } from './goodbye/goodbye.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { HeaderComponent } from './header/header.component';
+import { LoginComponent } from './login/login.component';
+import { FooterComponent } from './footer/footer.component';
 import { HightlightDirective } from './common/directives';
 
 
@@ -48,9 +50,10 @@ export function httpLoaderFactory(http: Http) {
   ],
   declarations: [
     AppComponent,
-    HelloComponent,
-    GoodbyeComponent,
-    HightlightDirective,
+    DashboardComponent,
+    HeaderComponent,
+    LoginComponent,
+    FooterComponent,
   ],
   bootstrap: [AppComponent],
 })

@@ -13,13 +13,20 @@
  * limitations under the License.
  */
 
-@import './common/styles/variables.scss';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AppSettings } from '../app.settings';
 
-.loading {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.with_icon_right {
-  margin-right: 5px;
+@Component({
+  selector: 'login',
+  templateUrl: './login.html',
+  styleUrls: ['./login.scss'],
+})
+export class LoginComponent {
+  private appName: string = AppSettings.APP_NAME;
+
+  constructor(
+    private router: Router,
+  ) { }
+
 }
