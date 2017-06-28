@@ -38,6 +38,7 @@ export class AuthService {
       .map((response: Response) => {
         const resp = response.json();
         sessionStorage.setItem('access_token', resp.access_token);
+        sessionStorage.setItem('refresh_token', resp.refresh_token);
 
         return resp;
       })
