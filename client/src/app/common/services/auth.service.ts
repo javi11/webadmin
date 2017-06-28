@@ -16,16 +16,35 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
+import { AppSettings } from '../../app.settings';
 
 @Injectable()
-export class GnomeService {
-  private gnomeEndpoint = 'https://raw.githubusercontent.com/rrafols/mobile_test/master/data.json';
+export class AuthService {
   constructor(
     private http: Http,
   ) { }
 
-  loadAllGnomes(): Observable<{}[]> {
-    return this.http.get(this.gnomeEndpoint)
-      .map((res:Response) => res.json().Brastlewark);
+  public login(email: string, password: string): Observable<any> {
+    const body = {
+      email,
+      password,
+    };
+    const headers = {
+      headers: AppSettings.DEFAULT_HEADERS,
+    };
+
+    return this.http
+      .post(`{$AppSettings.API_ROOT}/oauth2/token`, body, headers)
+      .map((response: Response) => {
+        const resp = response.json();
+        sessionStorage.setItem('access_token', resp.access_token);
+
+        return resp;
+      })
+      .catch(this.handleError);
+  }
+
+  private handleError(error: Response | any): Observable<any> {
+    return Observable.throw(error.json().error);
   }
 }

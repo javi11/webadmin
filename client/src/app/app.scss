@@ -14,12 +14,17 @@
  */
 
 @import './common/styles/variables.scss';
+html,
+body {
+  height: 100%;
+}
 
 .loading {
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
 }
+
 .with_icon_right {
   margin-right: 5px;
 }
