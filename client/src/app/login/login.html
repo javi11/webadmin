@@ -1,23 +1,23 @@
 <div class="login-wrapper">
   <div class="login-box">
     <div class="box-logo"></div>
-    <h1>{{'GENERAL.WEB_NAME' | translate}}</h1>
-    <h4>{{'LOGIN.TITLE' | translate}}</h4>
+    <h1>Axa Sure Back-office</h1>
+    <h4>LOG IN</h4>
     <form>
-      <input type="text" class="email" placeholder="Email">
+      <input type="text" class="email" placeholder="Username">
       <input type="password" placeholder="Password">
       <div *ngIf="error" class="error-message">
         Error: {{ error }}
       </div>
-      <div class="forgot-password">{{'LOGIN.FORGOT_PASSWORD' | translate}}</div>
-      <div *ngIf="!loading" class="login-button">{{'LOGIN.SUBMIT' | translate}}</div>
-      <div *ngIf="loading" class="login-button" disabled>{{'GENERAL.LOADING' | translate}}...</div>
+      <div class="forgot-password">Forgot password?</div>
+      <div *ngIf="!wait" class="login-button">Let's Go</div>
+      <div *ngIf="wait" class="login-button" disabled>Wait...</div>
       <div class="activate-passaxa">
-        <a href="https://passaxa.axa.com/pass/password_management.jsp" target="_blank">{{'GENERAL.ACTIVATE_PASSAXA' | translate}}</a>
+        <a href="https://passaxa.axa.com/pass/password_management.jsp" target="_blank">Activate your PassAXA</a>
       </div>
     </form>
   </div>
   <div class="login-footer">
-    &copy; 2017 AXA, v{{ appVersion }}
+    &copy; 2017 AXA
   </div>
 </div>

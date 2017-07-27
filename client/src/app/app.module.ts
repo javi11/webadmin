@@ -15,10 +15,10 @@
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, Http } from '@angular/http';
+import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { AUTH_PROVIDERS } from 'angular2-jwt';
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app.routing.module';
@@ -27,8 +27,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { FooterComponent } from './footer/footer.component';
-import { HightlightDirective } from './common/directives';
+import { AuthService } from './common/services';
 import { AuthGuard } from './common/auth.guard';
+import { authHttpServiceFactory } from './common/auth-http.service';
 
 // AoT requires an exported function for factories
 export function httpLoaderFactory(http: Http) {
@@ -57,8 +58,13 @@ export function httpLoaderFactory(http: Http) {
     FooterComponent,
   ],
   providers: [
+    AuthService,
     AuthGuard,
-    ...AUTH_PROVIDERS,
+    {
+      provide: AuthHttp,
+      useFactory: authHttpServiceFactory,
+      deps: [Http, RequestOptions],
+    },
   ],
   bootstrap: [AppComponent],
 })
