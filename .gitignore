@@ -6,7 +6,7 @@ node_modules/
 ._.*
 .idea/
 yarn.lock
-dist/
+build/
 *.csv
 *.dat
 *.iml

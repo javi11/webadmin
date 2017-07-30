@@ -32,7 +32,7 @@ app.disable('x-powered-by');
 app.set('view engine', 'ejs');
 app.set('views', `${root}/middleware/views`);
 
-app.use(express.static(`${root}/dist/`));
+app.use(express.static(`${root}/build/`));
 app.use(compression());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
