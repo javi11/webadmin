@@ -20,9 +20,14 @@ const root = require('app-root-path');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const config = require('./config.json');
-const proxy = require('express-http-proxy');
+const passAxa = require('passaxa');
+const { unauthorized, notFound } = require('boom');
+const cors = require('cors');
+const request = require('request');
 
 require('./init-global-container.js')();
+
+const logger = require('./utils/global-container.js').get('logger');
 
 const app = express();
 const allowedPath = config.models.map(model => `^/${model}`);
@@ -42,21 +47,93 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(
-  '/v1/api',
-  proxy(config.target, {
-    filter: (req) => {
-      const regexModels = new RegExp(allowedPath.join('|'), 'gi');
-      return regexModels.test(req.path);
-    }
+app.use(cors());
+
+// Get PassAxa Token
+app.use('/v1/api/OAuth2/token', (req, res, next) => {
+  const missingCredentials = !req.body && !req.body.username && !req.body.password;
+  if (missingCredentials) {
+    return next(unauthorized().output.payload);
+  }
+
+  return passAxa({
+    email: req.body.username,
+    password: req.body.password
   })
-);
+    .then(result => {
+      let error;
+
+      if (result.loggedin) {
+        logger.debug('PassAxa token', result.token);
+        req.body.email = result.username;
+        req.body.password = result.token;
+        req.body.grant_type = 'password';
+      } else {
+        logger.debug('Invalid password or email', req.body.username, req.body.password);
+        error = unauthorized().output.payload;
+      }
+
+      return next(error);
+    })
+    .catch(err => {
+      logger.debug('PassAxa error', err);
+
+      return next(unauthorized().output.payload);
+    });
+});
+
+app.use('/v1/api', (req, res, next) => {
+  const regexModels = new RegExp(allowedPath.join('|'), 'gi');
+  if (regexModels.test(req.path)) {
+    const options = {
+      uri: config.target + req.path,
+      qs: req.query,
+      method: req.method,
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json'
+      },
+      json: true
+    };
+    if (req.headers.authorization || req.query.access_token) {
+      Object.assign(options.headers, {
+        Authorization: `Bearer ${req.headers.authorization || req.query.access_token}`
+      });
+    }
+
+    if (req.body) {
+      Object.assign(options, { body: req.body });
+    }
+
+    logger.debug('Middleware options', options);
+
+    return request(options, (err, response) => {
+      if (err) {
+        logger.error('Error on request the endpoint on amf', err);
+        return next(err);
+      }
+      const body = response.body;
+      res.set(response.headers);
+      res.status(response.statusCode || 500);
+      if (req.path.indexOf('/token') > -1) {
+        Object.assign(body, {
+          id: body.access_token,
+          ttl: body.expires_in
+        });
+      }
+
+      return res.json(body);
+    });
+  }
+
+  return next(notFound().output.payload);
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
-  next(err);
+  return next(err);
 });
 
 // error handlers
@@ -65,19 +142,19 @@ app.use((req, res, next) => {
 if (app.get('env') === 'development') {
   app.use((err, req, res) => {
     res.status(err.status || 500);
-    res.render('error', {
+    res.json({
       message: err.message,
       error: err
     });
   });
-}
-
-app.use((err, req, res) => {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
+} else {
+  app.use((err, req, res) => {
+    res.status(err.status || 500);
+    res.json({
+      message: err.message,
+      error: {}
+    });
   });
-});
+}
 
 module.exports = app;

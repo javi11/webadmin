@@ -1,9 +1,4 @@
 {
-  "target": "https://amf-backend-core-node-uat.axaxx.nu/v1/api/",
-  "models": [
-    "amfusers",
-    "solutions",
-    "installations",
-    "notifications"
-  ]
+  "target": "https://amf-backend-core-node-uat.axaxx.nu/v1/api",
+  "models": ["amfusers", "solutions", "installations", "notifications", "oauth2"]
 }

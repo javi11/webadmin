@@ -6,23 +6,14 @@ import config from './config';
 
 import { SolutionList } from './components/solution';
 
-const httpClient = (url, options = {}) => {
-  if (!options.headers) {
-    options.headers = new Headers({ Accept: 'application/json' });
-  }
-  const token = localStorage.getItem('token');
-  options.headers.set('Authorization', `Bearer ${token}`);
-  return fetchUtils.fetchJson(url, options);
-};
-const restClient = loopbackRestClient(`${config.API_HOST}${config.API_PATH}`, httpClient);
+const restClient = loopbackRestClient(`${config.API_HOST}${config.API_PATH}`);
 
-const App = () => (
+const App = () =>
   <Admin
     restClient={restClient}
     authClient={authClient(`${config.API_HOST}${config.API_PATH}/oauth2/token`)}
   >
     <Resource name="solutions" list={SolutionList} />
-  </Admin>
-);
+  </Admin>;
 
 export default App;
