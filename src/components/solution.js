@@ -6,10 +6,11 @@ import {
   Filter,
   TextInput,
   SelectInput,
-  DateInput
+  DateInput,
+  DateField
 } from 'admin-on-rest';
 
-const SolutionFilter = props =>
+const SolutionFilter = props => (
   <Filter {...props}>
     <DateInput
       label="Since"
@@ -30,14 +31,16 @@ const SolutionFilter = props =>
       choices={[{ id: 'active', name: 'Active' }, { id: 'deleted', name: 'Deleted' }]}
     />
     <TextInput label="Search by name" source="name.like" alwaysOn />
-  </Filter>;
+  </Filter>
+);
 
-export const SolutionList = props =>
+export const SolutionList = props => (
   <List {...props} filters={<SolutionFilter />}>
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />
       <TextField source="status" />
-      <TextField source="createdAt" />
+      <DateField source="createdAt" showTime={true} />
     </Datagrid>
-  </List>;
+  </List>
+);

@@ -1,19 +1,25 @@
 import React from 'react';
 import {
+  ReferenceArrayField,
+  TextField,
+  ChipField,
+  RichTextField,
+  SingleFieldList,
+  DateField,
   List,
   Datagrid,
-  TextField,
   Filter,
   TextInput,
   SelectInput,
   DateInput,
   Show,
-  SimpleShowLayout,
-  ShowButton
+  TabbedShowLayout,
+  ShowButton,
+  Tab
 } from 'admin-on-rest';
 import { RawJsonField } from './custom-fields';
 
-const NotificationsFilter = props =>
+const NotificationsFilter = props => (
   <Filter {...props}>
     <DateInput
       label="Since"
@@ -34,30 +40,53 @@ const NotificationsFilter = props =>
       choices={[{ id: 'read', name: 'Read' }, { id: 'unread', name: 'Unread' }]}
     />
     <TextInput label="Search by userId" source="userId.like" alwaysOn />
-  </Filter>;
+  </Filter>
+);
 
-export const NotificationList = props =>
+export const NotificationList = props => (
   <List {...props} filters={<NotificationsFilter />}>
     <Datagrid>
       <TextField source="id" />
-      <TextField source="components" />
-      <TextField source="createdAt" />
+      <ReferenceArrayField label="Components" reference="components" source="components">
+        <SingleFieldList>
+          <ChipField source="name" />
+        </SingleFieldList>
+      </ReferenceArrayField>
+      <DateField source="createdAt" showTime={true} />
       <TextField source="status" />
       <TextField source="type" />
       <TextField source="userId" />
       <ShowButton />
     </Datagrid>
-  </List>;
+  </List>
+);
 
-export const NotificationShow = props =>
-  <Show {...props}>
-    <SimpleShowLayout>
+const PushNotifications = props => (
+  <List {...props}>
+    <Datagrid>
       <TextField source="id" />
-      <TextField source="components" />
-      <TextField source="createdAt" />
-      <TextField source="status" />
-      <TextField source="type" />
-      <TextField source="userId" />
-      <RawJsonField label="Payload" source="payload" />
-    </SimpleShowLayout>
-  </Show>;
+      <TextField source="installationId" />
+      <DateField source="createdAt" showTime={true} />
+      <ChipField source="status" />
+      <RichTextField source="response" />
+    </Datagrid>
+  </List>
+);
+
+export const NotificationShow = props => (
+  <Show {...props}>
+    <TabbedShowLayout>
+      <Tab label="Details">
+        <TextField source="id" />
+        <TextField source="components" />
+        <DateField source="createdAt" showTime={true} />
+        <TextField source="status" />
+        <TextField source="type" />
+        <TextField source="userId" />
+      </Tab>
+      <Tab label="Payload">
+        <RawJsonField label="Payload" source="payload" />
+      </Tab>
+    </TabbedShowLayout>
+  </Show>
+);
