@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactJson from 'react-json-view';
 
 const RawJsonField = ({ record, source }) =>
   <pre>
-    {JSON.stringify(record[source], null, 2)}
+    <ReactJson src={record[source]} />
   </pre>;
 
 RawJsonField.propTypes = {
