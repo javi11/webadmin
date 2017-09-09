@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactJson from 'react-json-view';
+import get from 'lodash.get';
 
-const RawJsonField = ({ record, source }) =>
+export const RawJsonField = ({ record, source }) => (
   <pre>
-    <ReactJson src={record[source]} />
-  </pre>;
+    <ReactJson collapseStringsAfterLength="5" collapsed="true" src={get(record, source)} />
+  </pre>
+);
 
 RawJsonField.propTypes = {
   addLabel: PropTypes.bool,
@@ -18,5 +20,3 @@ RawJsonField.propTypes = {
 RawJsonField.defaultProps = {
   addLabel: true
 };
-
-export { RawJsonField };

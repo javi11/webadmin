@@ -3,7 +3,6 @@ import {
   ReferenceArrayField,
   TextField,
   ChipField,
-  RichTextField,
   SingleFieldList,
   DateField,
   List,
@@ -17,7 +16,8 @@ import {
   ShowButton,
   Tab
 } from 'admin-on-rest';
-import { RawJsonField } from './custom-fields';
+import { RawJsonField } from './custom-fields/raw-json-field';
+import { EmbeddedArrayField } from './custom-fields/embedded-array-field';
 
 const NotificationsFilter = props => (
   <Filter {...props}>
@@ -61,18 +61,6 @@ export const NotificationList = props => (
   </List>
 );
 
-const PushNotifications = props => (
-  <List {...props}>
-    <Datagrid>
-      <TextField source="id" />
-      <TextField source="installationId" />
-      <DateField source="createdAt" showTime={true} />
-      <ChipField source="status" />
-      <RichTextField source="response" />
-    </Datagrid>
-  </List>
-);
-
 export const NotificationShow = props => (
   <Show {...props}>
     <TabbedShowLayout>
@@ -86,6 +74,15 @@ export const NotificationShow = props => (
       </Tab>
       <Tab label="Payload">
         <RawJsonField label="Payload" source="payload" />
+      </Tab>
+      <Tab label="Push notifications">
+        <EmbeddedArrayField source="pushNotifications">
+          <TextField source="id" label="id" />
+          <TextField source="installationId" label="installationId" />
+          <DateField source="createdAt" label="created at" showTime={true} />
+          <ChipField source="status" label="status" />
+          <RawJsonField source="response" label="response" />
+        </EmbeddedArrayField>
       </Tab>
     </TabbedShowLayout>
   </Show>

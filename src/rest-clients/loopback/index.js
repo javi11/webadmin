@@ -42,7 +42,14 @@ export default (apiUrl, httpClient = fetchJson) => {
         break;
       }
       case GET_ONE:
-        url = `${apiUrl}/${resource}/${params.id}`;
+        const query = {};
+        if (resource.indexOf('notifications') > -1) {
+          query.include = 'pushNotifications';
+        }
+
+        url = `${apiUrl}/${resource}/${params.id}?${queryParameters({
+          filter: JSON.stringify(query)
+        })}`;
         break;
       case GET_MANY: {
         const query = {
