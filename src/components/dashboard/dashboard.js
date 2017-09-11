@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import withWidth from 'material-ui/utils/withWidth';
-import { AppBarMobile, GET_LIST } from 'admin-on-rest';
+import { AppBarMobile, GET_LIST, showNotification } from 'admin-on-rest';
 
 import Welcome from './welcome';
 import NotificationList from './notification-list';
+import UserList from './user-list';
+import ComponentTips from './component-tips';
+import NotificationTips from './notification-tips';
 import { restClient } from '../../rest-client';
 
 const styles = {
@@ -20,7 +23,7 @@ class Dashboard extends Component {
   componentDidMount() {
     restClient(GET_LIST, 'notifications', {
       sort: { field: 'createdAt', order: 'DESC' },
-      pagination: { page: 1, perPage: 20 }
+      pagination: { page: 1, perPage: 10 }
     })
       .then(response => response.data)
       .then(notifications => {
@@ -29,11 +32,26 @@ class Dashboard extends Component {
         });
 
         return notifications;
-      });
+      })
+      .catch(err => showNotification(err.message));
+
+    restClient(GET_LIST, 'amfusers', {
+      sort: { field: 'createdAt', order: 'DESC' },
+      pagination: { page: 1, perPage: 10 }
+    })
+      .then(response => response.data)
+      .then(users => {
+        this.setState({
+          users
+        });
+
+        return users;
+      })
+      .catch(err => showNotification(err.message));
   }
 
   render() {
-    const { notifications } = this.state;
+    const { notifications, users } = this.state;
     const { width } = this.props;
     return (
       <div>
@@ -41,8 +59,17 @@ class Dashboard extends Component {
         <Welcome style={styles.welcome} />
         <div style={styles.flex}>
           <div style={styles.leftCol}>
+            <div style={styles.flex}>
+              <ComponentTips />
+              <NotificationTips />
+            </div>
             <div style={styles.singleCol}>
               <NotificationList notifications={notifications} />
+            </div>
+          </div>
+          <div style={styles.rightCol}>
+            <div style={styles.flex}>
+              <UserList users={users} />
             </div>
           </div>
         </div>
