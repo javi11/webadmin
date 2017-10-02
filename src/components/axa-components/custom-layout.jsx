@@ -1,4 +1,19 @@
-import React, { Component } from 'react';
+/*
+ * Copyright (c) 2017 AXA Group Solutions.
+ *
+ * Licensed under the AXA Group Solutions License (the "License")
+ * you may not use this file except in compliance with the License.
+ * A copy of the License can be found in the LICENSE.TXT file distributed
+ * together with this file.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import React, { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -7,15 +22,15 @@ import autoprefixer from 'material-ui/utils/autoprefixer';
 import CircularProgress from 'material-ui/CircularProgress';
 import withWidth from 'material-ui/utils/withWidth';
 import compose from 'recompose/compose';
-
-import AppBar from './app-bar';
 import {
-  defaultTheme,
   AdminRoutes,
   Sidebar,
+  Menu,
   Notification,
+  defaultTheme,
   setSidebarVisibility as setSidebarVisibilityAction
 } from 'admin-on-rest';
+import AppBar from './app-bar';
 
 const styles = {
   wrapper: {
@@ -66,16 +81,18 @@ class CustomLayout extends Component {
 
   render() {
     const {
-      authClient,
+      children,
       customRoutes,
       dashboard,
       isLoading,
+      logout,
       menu,
-      resources,
+      catchAll,
       theme,
       title,
       width
     } = this.props;
+
     const muiTheme = getMuiTheme(theme);
     if (!prefixedStyles.main) {
       // do this once because user agent never changes
@@ -97,26 +114,27 @@ class CustomLayout extends Component {
               style={width === 1 ? prefixedStyles.bodySmall : prefixedStyles.body}
             >
               <div style={width === 1 ? prefixedStyles.contentSmall : prefixedStyles.content}>
-                <AdminRoutes
-                  customRoutes={customRoutes}
-                  resources={resources}
-                  authClient={authClient}
-                  dashboard={dashboard}
-                />
+                <AdminRoutes customRoutes={customRoutes} dashboard={dashboard} catchAll={catchAll}>
+                  {children}
+                </AdminRoutes>
               </div>
               <Sidebar theme={theme}>
-                {menu}
+                {createElement(menu || Menu, {
+                  logout,
+                  hasDashboard: !!dashboard
+                })}
               </Sidebar>
             </div>
             <Notification />
-            {isLoading &&
+            {isLoading && (
               <CircularProgress
                 className="app-loader"
                 color="#fff"
                 size={width === 1 ? 20 : 30}
                 thickness={2}
                 style={styles.loader}
-              />}
+              />
+            )}
           </div>
         </div>
       </MuiThemeProvider>
@@ -124,13 +142,16 @@ class CustomLayout extends Component {
   }
 }
 
+const componentPropType = PropTypes.oneOfType([PropTypes.func, PropTypes.string]);
+
 CustomLayout.propTypes = {
-  authClient: PropTypes.func,
+  children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
+  catchAll: componentPropType,
   customRoutes: PropTypes.array,
-  dashboard: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  dashboard: componentPropType,
   isLoading: PropTypes.bool.isRequired,
-  menu: PropTypes.element,
-  resources: PropTypes.array,
+  logout: PropTypes.oneOfType([PropTypes.node, PropTypes.func, PropTypes.string]),
+  menu: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   setSidebarVisibility: PropTypes.func.isRequired,
   title: PropTypes.node.isRequired,
   theme: PropTypes.object.isRequired,

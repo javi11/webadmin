@@ -1,6 +1,23 @@
+/*
+ * Copyright (c) 2017 AXA Group Solutions.
+ *
+ * Licensed under the AXA Group Solutions License (the "License")
+ * you may not use this file except in compliance with the License.
+ * A copy of the License can be found in the LICENSE.TXT file distributed
+ * together with this file.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
+import { get } from 'lodash';
+import pure from 'recompose/pure';
+import compose from 'recompose/compose';
 import {
   Table,
   TableBody,
@@ -9,6 +26,7 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table';
+import { translate as aorTranslate } from 'admin-on-rest';
 
 /**
  * A container component that shows embedded array elements as a list of input sets
@@ -29,16 +47,20 @@ import {
  * </EmbeddedArrayField>
  *
  */
-export class EmbeddedArrayField extends Component {
-  state = {
-    showRowHover: false,
-    selectable: false,
-    showCheckboxes: false,
-    hoverable: false
-  };
+class EmbeddedArrayField extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showRowHover: false,
+      selectable: false,
+      showCheckboxes: false,
+      hoverable: false
+    };
+  }
 
   render() {
-    const { children, source, record } = this.props;
+    const { children, source, record, translate } = this.props;
     const elements = get(record, source) || [];
     return (
       <div>
@@ -47,7 +69,7 @@ export class EmbeddedArrayField extends Component {
             <TableRow>
               {React.Children.map(children, child => (
                 <TableHeaderColumn key={child.props.label}>
-                  {`${child.props.label}`}
+                  {`${translate(child.props.label)}`}
                 </TableHeaderColumn>
               ))}
             </TableRow>
@@ -58,17 +80,18 @@ export class EmbeddedArrayField extends Component {
           >
             {elements.map(
               (element, i) => (
-                <TableRow key={i} hoverable={this.state.hoverable}>
+                <TableRow key={element.id} hoverable={this.state.hoverable}>
                   {React.Children.map(
                     children,
                     (child, index) =>
-                      child &&
-                      <TableRowColumn key={index}>
-                        {React.cloneElement(child, {
-                          source: `${source}[${i}].${child.props.source}`,
-                          record
-                        })}
-                      </TableRowColumn>
+                      child && (
+                        <TableRowColumn key={index}>
+                          {React.cloneElement(child, {
+                            source: child.props.source,
+                            record: record[source][i]
+                          })}
+                        </TableRowColumn>
+                      )
                   )}
                 </TableRow>
               ),
@@ -82,15 +105,17 @@ export class EmbeddedArrayField extends Component {
 }
 
 EmbeddedArrayField.propTypes = {
-  addLabel: PropTypes.bool,
-  basePath: PropTypes.string,
   children: PropTypes.node.isRequired,
-  data: PropTypes.object,
-  label: PropTypes.string,
   record: PropTypes.object,
-  source: PropTypes.string.isRequired
+  source: PropTypes.string.isRequired,
+  translate: PropTypes.func.isRequired
 };
 
 EmbeddedArrayField.defaultProps = {
-  addLabel: true
+  addLabel: true,
+  record: null
 };
+
+const enhance = compose(pure, aorTranslate);
+
+export default enhance(EmbeddedArrayField);

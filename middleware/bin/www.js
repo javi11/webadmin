@@ -49,7 +49,7 @@ const server = http.createServer(app);
  */
 server.listen(PORT);
 
-server.on('error', (error) => {
+server.on('error', error => {
   /**
    * Event listener for HTTP server "error" event.
    */

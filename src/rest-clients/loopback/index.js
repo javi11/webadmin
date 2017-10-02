@@ -1,6 +1,21 @@
+/*
+ * Copyright (c) 2017 AXA Group Solutions.
+ *
+ * Licensed under the AXA Group Solutions License (the "License")
+ * you may not use this file except in compliance with the License.
+ * A copy of the License can be found in the LICENSE.TXT file distributed
+ * together with this file.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import authClient from './authClient';
 import { queryParameters, fetchJson } from './fetch';
 import { GET_LIST, GET_ONE, GET_MANY, GET_MANY_REFERENCE, CREATE, UPDATE, DELETE } from './types';
-export * from './authClient';
 
 /**
  * Maps admin-on-rest queries to a loopback powered REST API
@@ -22,14 +37,15 @@ export default (apiUrl, httpClient = fetchJson) => {
      * @returns {Object} { url, options } The HTTP request parameters
      */
   const convertRESTRequestToHTTP = (type, resource, params) => {
-    resource = resource.toLowerCase();
+    const resourceLowerCase = resource && resource.toLowerCase();
     let url = '';
     const options = {};
+    let query = {};
+    const { page, perPage } = params && params.pagination ? params.pagination : {};
+    const { field, order } = params && params.sort ? params.sort : {};
+
     switch (type) {
-      case GET_LIST: {
-        const { page, perPage } = params.pagination;
-        const { field, order } = params.sort;
-        const query = {};
+      case GET_LIST:
         query.where = { ...params.filter };
         if (field) query.order = [`${field} ${order}`];
         if (perPage > 0) {
@@ -38,30 +54,38 @@ export default (apiUrl, httpClient = fetchJson) => {
             query.skip = (page - 1) * perPage;
           }
         }
-        url = `${apiUrl}/${resource}?${queryParameters({ filter: JSON.stringify(query) })}`;
-        break;
-      }
-      case GET_ONE:
-        const query = {};
-        if (resource.indexOf('notifications') > -1) {
+
+        // On ask for notifications or devices we have to add this extra parameters to adapt the response to pure loopback rest
+        if (resourceLowerCase.indexOf('notifications') > -1) {
           query.include = 'pushNotifications';
         }
 
-        url = `${apiUrl}/${resource}/${params.id}?${queryParameters({
+        url = `${apiUrl}/${resourceLowerCase}?${queryParameters({
+          filter: JSON.stringify(query),
+          mapping: false
+        })}`;
+        break;
+
+      case GET_ONE:
+        // On ask for notifications we have to add this extra parameters to adapt the response to pure loopback rest
+        if (resourceLowerCase.indexOf('notifications') > -1) {
+          query.include = 'pushNotifications';
+        }
+
+        url = `${apiUrl}/${resourceLowerCase}/${params.id}?${queryParameters({
           filter: JSON.stringify(query)
         })}`;
         break;
-      case GET_MANY: {
-        const query = {
+      case GET_MANY:
+        query = {
           where: { id: { inq: params.ids } }
         };
-        url = `${apiUrl}/${resource}?${queryParameters({ filter: JSON.stringify(query) })}`;
+        url = `${apiUrl}/${resourceLowerCase}?${queryParameters({
+          filter: JSON.stringify(query)
+        })}`;
         break;
-      }
-      case GET_MANY_REFERENCE: {
-        const { page, perPage } = params.pagination;
-        const { field, order } = params.sort;
-        const query = {};
+
+      case GET_MANY_REFERENCE:
         query.where = { ...params.filter };
         query.where[params.target] = params.id;
         if (field) query.order = [`${field} ${order}`];
@@ -71,21 +95,23 @@ export default (apiUrl, httpClient = fetchJson) => {
             query.skip = (page - 1) * perPage;
           }
         }
-        url = `${apiUrl}/${resource}?${queryParameters({ filter: JSON.stringify(query) })}`;
+        url = `${apiUrl}/${resourceLowerCase}?${queryParameters({
+          filter: JSON.stringify(query)
+        })}`;
         break;
-      }
+
       case UPDATE:
-        url = `${apiUrl}/${resource}/${params.id}`;
+        url = `${apiUrl}/${resourceLowerCase}/${params.id}`;
         options.method = 'PATCH';
         options.body = JSON.stringify(params.data);
         break;
       case CREATE:
-        url = `${apiUrl}/${resource}`;
+        url = `${apiUrl}/${resourceLowerCase}`;
         options.method = 'POST';
         options.body = JSON.stringify(params.data);
         break;
       case DELETE:
-        url = `${apiUrl}/${resource}/${params.id}`;
+        url = `${apiUrl}/${resourceLowerCase}/${params.id}`;
         options.method = 'DELETE';
         break;
       default:
@@ -116,7 +142,7 @@ export default (apiUrl, httpClient = fetchJson) => {
           total: parseInt(headers.get('x-total-count').split('/').pop(), 10)
         };
       case CREATE:
-        return { data: { ...params.data, id: json.id } };
+        return { data: { request: { ...params.data }, id: json.id || 'response', body: json } };
       default:
         return { data: json };
     }
@@ -135,3 +161,5 @@ export default (apiUrl, httpClient = fetchJson) => {
     );
   };
 };
+
+export { authClient };

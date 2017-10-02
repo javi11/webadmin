@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2017 AXA Group Solutions.
+ *
+ * Licensed under the AXA Group Solutions License (the "License")
+ * you may not use this file except in compliance with the License.
+ * A copy of the License can be found in the LICENSE.TXT file distributed
+ * together with this file.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/* global window */
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propTypes, reduxForm, Field } from 'redux-form';
@@ -5,11 +21,15 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
+import CircularProgress from 'material-ui/CircularProgress';
 import { grey50 } from 'material-ui/styles/colors';
 import { Card, CardActions, Chip, Avatar, RaisedButton, TextField } from 'material-ui';
 
-import { Notification, translate, userLogin as userLoginAction } from 'admin-on-rest';
+import {
+  Notification,
+  translate as aorTranslate,
+  userLogin as userLoginAction
+} from 'admin-on-rest';
 
 import axaLogo from '../../assets/images/axa-logo-login.png';
 import passAxa from '../../assets/images/passaxa.png';
@@ -27,7 +47,6 @@ const styles = {
     backgroundColor: '#103184',
     backgroundSize: 'cover'
   },
-
   row: {
     display: 'flex',
     flexFlow: 'row',
@@ -77,13 +96,15 @@ const renderInput = ({ meta: { touched, error } = {}, input: { ...inputProps }, 
 );
 
 class Login extends Component {
-  login = ({ username, password }) => {
+  login() {
     const { userLogin, location } = this.props;
-    userLogin({ username, password }, location.state ? location.state.nextPathname : '/');
-  };
+    return ({ username, password }) => {
+      userLogin({ username, password }, location.state ? location.state.nextPathname : '/');
+    };
+  }
 
   render() {
-    const { handleSubmit, submitting, theme, translate } = this.props;
+    const { handleSubmit, isLoading, theme, translate } = this.props;
     const muiTheme = getMuiTheme(theme);
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
@@ -95,7 +116,7 @@ class Login extends Component {
               </div>
             </div>
             <div style={styles.row}>
-              <form style={styles.cell} onSubmit={handleSubmit(this.login)}>
+              <form style={styles.cell} onSubmit={handleSubmit(this.login())}>
                 <div style={styles.form}>
                   <p style={styles.hint}>Use your PassAxa credentials</p>
                   <div style={styles.input}>
@@ -103,6 +124,7 @@ class Login extends Component {
                       name="username"
                       component={renderInput}
                       floatingLabelText={translate('aor.auth.username')}
+                      disabled={isLoading}
                     />
                   </div>
                   <div style={styles.input}>
@@ -111,6 +133,7 @@ class Login extends Component {
                       component={renderInput}
                       floatingLabelText={translate('aor.auth.password')}
                       type="password"
+                      disabled={isLoading}
                     />
                   </div>
                 </div>
@@ -118,7 +141,8 @@ class Login extends Component {
                   <RaisedButton
                     type="submit"
                     primary
-                    disabled={submitting}
+                    disabled={isLoading}
+                    icon={isLoading && <CircularProgress size={25} thickness={2} />}
                     label={translate('aor.auth.sign_in')}
                     fullWidth
                   />
@@ -130,13 +154,11 @@ class Login extends Component {
                 onClick={() => window.open('https://passaxa.axa.com/pass/password_management.jsp')}
               >
                 <Avatar icon={<img alt="passAxa" src={passAxa} />} />
-                Activate your PassAxa
+                {translate('axa.auth.activatePassAxa')}
               </Chip>
             </div>
           </Card>
-          <div style={styles.copyright}>
-            © 2017 Axa{' '}
-          </div>
+          <div style={styles.copyright}>© 2017 Axa</div>
           <Notification />
         </div>
       </MuiThemeProvider>
@@ -149,15 +171,19 @@ Login.propTypes = {
   authClient: PropTypes.func,
   previousRoute: PropTypes.string,
   theme: PropTypes.object.isRequired,
-  translate: PropTypes.func.isRequired
+  translate: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired
 };
 
 Login.defaultProps = {
-  theme: {}
+  theme: {},
+  isLoading: false
 };
 
+const mapStateToProps = state => ({ isLoading: state.admin.loading > 0 });
+
 const enhance = compose(
-  translate,
+  aorTranslate,
   reduxForm({
     form: 'signIn',
     validate: (values, props) => {
@@ -168,7 +194,7 @@ const enhance = compose(
       return errors;
     }
   }),
-  connect(null, { userLogin: userLoginAction })
+  connect(mapStateToProps, { userLogin: userLoginAction })
 );
 
 export default enhance(Login);

@@ -1,10 +1,26 @@
+/*
+ * Copyright (c) 2017 AXA Group Solutions.
+ *
+ * Licensed under the AXA Group Solutions License (the "License")
+ * you may not use this file except in compliance with the License.
+ * A copy of the License can be found in the LICENSE.TXT file distributed
+ * together with this file.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/* global localStorage */
+
 export default {
   save(key, value, expirationSec) {
     if (typeof Storage === 'undefined') {
       return false;
     }
-    var expirationMS = expirationSec * 1000;
-    var record = { value, timestamp: new Date().getTime() + expirationMS };
+    const expirationMS = expirationSec * 1000;
+    const record = { value, timestamp: new Date().getTime() + expirationMS };
     localStorage.setItem(key, JSON.stringify(record));
     return value;
   },
@@ -13,7 +29,7 @@ export default {
       return false;
     }
     try {
-      var record = JSON.parse(localStorage.getItem(key));
+      const record = JSON.parse(localStorage.getItem(key));
       if (!record) {
         return false;
       }
@@ -27,5 +43,7 @@ export default {
       return false;
     }
     localStorage.removeItem(key);
+
+    return true;
   }
 };

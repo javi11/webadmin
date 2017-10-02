@@ -13,19 +13,11 @@
  * limitations under the License.
  */
 
-class HttpError extends Error {
-  constructor(message, status) {
-    super(message);
-    this.message = message;
-    this.status = status;
-    this.name = this.constructor.name;
-    if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(this, this.constructor);
-    } else {
-      this.stack = new Error(message).stack;
-    }
-    this.stack = new Error().stack;
+export default (previousState = 0, { type, payload }) => {
+  if (type === 'AOR/CRUD_CREATE_FAILURE' || type === '@@router/LOCATION_CHANGE') {
+    return [];
+  } else if (type === 'AOR/CRUD_CREATE_SUCCESS') {
+    return payload.data.body || [];
   }
-}
-
-export default HttpError;
+  return previousState;
+};

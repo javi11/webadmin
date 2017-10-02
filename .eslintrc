@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb-base", "prettier"],
+  "extends": ["airbnb", "prettier"],
   "plugins": ["prettier"],
   "env": {
     "node": true,
@@ -7,6 +7,12 @@
   },
   "rules": {
     "comma-dangle": ["error", "never"],
-    "global-require": 0
+    "global-require": 0,
+    "react/forbid-prop-types": ["off"],
+    "react/prop-types": ["warn"],
+    "react/require-default-props": ["warn"],
+    "react/no-unused-prop-types": ["warn"],
+    "react/jsx-filename-extension": ["off"],
+    "import/no-extraneous-dependencies": ["off"]
   }
 }
