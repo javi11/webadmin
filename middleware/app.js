@@ -20,7 +20,7 @@ const root = require('app-root-path');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const config = require('./config.json');
-// const passAxa = require('passaxa');
+const passAxa = require('passaxa');
 const { unauthorized, notFound } = require('boom');
 const cors = require('cors');
 const request = require('request');
@@ -56,13 +56,7 @@ app.use('/v1/api/OAuth2/token', (req, res, next) => {
     return next(unauthorized().output.payload);
   }
 
-  req.body.email = req.body.username;
-  req.body.password =
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.WXRzQktVclRsMlpydXZ3K01FMXMzZmtic2dhTnRiQ2xXWUtyQ3hPR0FPR05sSld2WUs3VE1YN05XSEZ4YXUyaE5NMWljQVFxZnRxVWpnR2Q0cU9OS0tQUmdPRUYrQXR1ZVZvSCtIN0c5OXkwOE9acU0rNFNuZzBzQWsrMm11ZWgzK3NqVUJvUVVmUXNUQ1krbjJxclc2VTBTUHRycHhYdVRCelR6WkVNZTNCOSs5QkRiN0YvL2FMeG9ZdXRydm5IYzEyR2ZQT0ZVWVIyVUVZNVRBMStvejZtY0N5aXF3TmsxcDFWTlNuamlZdEJKbnU2QXl4bjY1Mk40eXNSVDVRREplTG5MV1puVUZZSGRNVFFyM1lpRHZETHl4TGJTNFN3clpUQUFCV0dVRmhlZXoxeFlQMlBxTW1pMGxCZCtaVVdOaE5WZkZ3VmhVTlJ3WXVidHM0dXZHWGd3Wnl2SXJqYjVWNmJyTisxVC9ha2VRaGUzOUliQWFRMCtPSEJNdlRRSlNMeEo2djlRcnFqbHlQWDB6MW9pSmhoeFhkM0ZPaCt4VE9OOE5yd0hBenIzN2U2YXJ5c2tqc3NoaVM5eXZ0S1dLcllYQjA1Q2J5OHNTT2ZXRGhPOWFBSnZtQXhCQVdMZ0s1Vm9EdlhsUnNNRGNKUDI5TFJCbVo2akVlZW1hUXdkYWN6dWxOUWNpU1dHSWVVZ0g2YVFlWm9TcTNUU2xWQzdzeUpLSTBzdTVTcjRwa01kSDRYOE5ReW5CeDlZYkl0YmVHdkFiSmRkUmhxelBKR2lGOGtsZEFYMnZOZnZkYk00OG5PWGtKeTdwOE9MR3VCdW5EM3pyd0JpTDFjUEIxbFBxdU9CZUQ1Z3VGVDhuTzBqMXdFNWhDUTZPR3c5bXhITkJCQ1FYeExJQWVlSHplMEZ4M3dvZUtTd1dhNkdybGFZeVF1UHNFVDExNzFjbmZjbDQxdXZNOEV5MHJUN3hrT3ZiM3AyU1FHY2liLzNMOHJnR1dCL2NUaFB3dGRvZy9UZEZKa2xSTVg0cHdQZjVzM0x5Vk5RL3BER2hXZm5VWmhxcGp3aUh1bW1JYjZWZDBPNWF6WmNYU1BRdERVbFlobDNYeDQ3K0pGV3l2ZjVPVXNUbjY2eHNrT3lvN1BaT3hmdVdCbFBnSlN5bzN5VFNRUlZwejQwdlNMaVM4eFV0L0tRWGVGOCtvdEd4ZEtXTityS0dQdnFGajB5anhUbWpJa1Z1K1lhTWg4a1ZzZlVBVWtvV29vVkVDVVJTdDZGaTgxWnU4bENYTnExUGJ1TTBqRDNCcVJWMkJYcUY4dkJVWG1aMWpNeExEVFphZz0.39lvrFxMI4k6Ch37T37x6WiG3atz7_1brcuCSPmonmQ';
-  req.body.grant_type = 'password';
-  return next();
-
-  /* return passAxa({
+  return passAxa({
     email: req.body.username,
     password: req.body.password
   })
@@ -85,7 +79,7 @@ app.use('/v1/api/OAuth2/token', (req, res, next) => {
       logger.debug('PassAxa error', err);
 
       return next(unauthorized().output.payload);
-    }); */
+    });
 });
 
 app.use('/v1/api', (req, res, next) => {

@@ -20,7 +20,8 @@ export default {
     },
     sidebar: {
       notification: 'Notifications',
-      installation: 'Installations'
+      installation: 'Installations',
+      user: 'Users'
     },
     notification: {
       detail: 'Notification #%{id}',
@@ -55,6 +56,8 @@ export default {
       appVersion: 'Search by app version'
     },
     fields: {
+      role: 'Role',
+      username: 'Username',
       id: 'Id',
       userId: 'User id',
       components: 'Components',

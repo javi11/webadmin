@@ -25,6 +25,7 @@ import Login from './components/axa-components/login';
 import menu from './components/axa-components/menu';
 import InstallationList from './components/installation';
 import { NotificationList, NotificationShow } from './components/notification';
+import { UserList, UserEdit, UserCreate } from './components/user';
 import restClient from './rest-client';
 import I18n from './i18n';
 import createResponseReducer from './reducers/create-response-reducer';
@@ -55,6 +56,13 @@ const App = () => (
         options={{ label: 'axa.sidebar.notification' }}
         show={NotificationShow}
         list={NotificationList}
+      />
+      <Resource
+        name="amfusers"
+        options={{ label: 'axa.sidebar.user' }}
+        edit={UserEdit}
+        list={UserList}
+        create={UserCreate}
       />
     </Admin>
   </div>

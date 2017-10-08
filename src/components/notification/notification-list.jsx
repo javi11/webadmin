@@ -29,10 +29,13 @@ import {
   DateInput,
   ShowButton,
   FunctionField,
-  ReferenceInput
+  ReferenceInput,
+  Menu,
+  MenuItem
 } from 'admin-on-rest';
 import Chip from 'material-ui/Chip';
 import { red50, green50, red500, green500, grey50 } from 'material-ui/styles/colors';
+import Popover from '../custom-fields/popover-field';
 
 const styles = {
   color: grey50
